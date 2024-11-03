@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import videoLogo from "../assets/upload.png";
 import { Button, Card, Label, TextInput,Textarea } from "flowbite-react";
+import axios from "axios";
 
 function VideoUpload() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -15,10 +16,53 @@ function VideoUpload() {
   function handleFileChange(event) {
     console.log(event.target.files[0]);
   }
+  function formFieldChange(event){
+   
+    setMeta({
+        ...meta,
+        [event.target.name]:event.target.value
+    })
+  }
 
   function handleForm(formEvent) {
     formEvent.preventDefault();
-    console.log(formEvent);
+    if(!selectedFile){
+      alert("Select file please");
+      return;
+    }
+    saveVideoToServer(selectedFile,meta)
+  }
+  function VideoUpload(){
+    async function saveVideoToServer(video,videoMetData){
+      setUploading(true);
+
+      try{
+        let formData = new FormData();
+        formData.append("title",videoMetData.title);
+        formData.append("description", videoMetData.description);
+        formData.append("file",selectedFile)
+    
+
+
+
+        let response = await axios.post(` http://localhost:8080/api/v1/videos` , formData,{
+          headers:{
+            "Content-Type":"multipart/form-data",
+
+          },
+          onUploadProgress:(progressEvent) =>{
+            console.log(progressEvent);
+          },
+        });
+        console.log(response)
+        setMessage("File uploaded");
+      }
+      catch(error){
+        console.log(error);
+
+      }
+    }
+ 
   }
 
   return (
@@ -32,13 +76,13 @@ function VideoUpload() {
                 <div className="mb-2 block">
                   <Label htmlFor="file-upload" value="upload file" />
                 </div>
-                <TextInput name = "title" placeholder="Enter title"/>
+                <TextInput onChange = {formFieldChange} name = "title" placeholder="Enter title"/>
               </div>
               <div className="max-w-md">
       <div className="mb-2 block">
         <Label htmlFor="comment" value="Video description" />
       </div>
-      <Textarea name = "description " id="comment" placeholder="  Write video description...." required rows={4} />
+      <Textarea onChange = {formFieldChange} name = "description " id="comment" placeholder="  Write video description...." required rows={4} />
     </div>
               <div className="flex items-center space-x-5 justify-center">
                 <div className="shrink-0">
