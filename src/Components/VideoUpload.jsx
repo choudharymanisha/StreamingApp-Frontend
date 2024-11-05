@@ -33,6 +33,14 @@ function VideoUpload() {
     }
     saveVideoToServer(selectedFile, meta);
   }
+  function resetForm(){
+    setMeta({
+      title:"",
+      description:"",
+    })
+    setSelectedFile(null);
+    setUploading(false);
+  }
 
   async function saveVideoToServer(video, videoMetaData) {
     setUploading(true);
@@ -56,6 +64,7 @@ function VideoUpload() {
       setMessage("File uploaded successfully!");
       setUploading(false);
       toast.success("File uploaded successfully");
+      resetForm();
     } catch (error) {
       console.log("Error in uploading:", error);
       setUploading(false);
@@ -71,11 +80,12 @@ function VideoUpload() {
           <form noValidate className="space-y-5" onSubmit={handleForm}>
             <div>
               <Label htmlFor="file-upload" value="Upload file" />
-              <TextInput onChange={formFieldChange} name="title" placeholder="Enter title" />
+              <TextInput  value = {meta.title}onChange={formFieldChange} name="title" placeholder="Enter title" />
             </div>
             <div className="max-w-md">
               <Label htmlFor="comment" value="Video description" />
               <Textarea
+              value = {meta.description}
                 onChange={formFieldChange}
                 name="description"
                 id="comment"
@@ -103,7 +113,9 @@ function VideoUpload() {
               <Alert color={"success"}
               rounded 
               withBorderAccent
-              onDismiss={() => {}}
+              onDismiss={() => {
+                setMessage("")
+              }}
 
 
               >
