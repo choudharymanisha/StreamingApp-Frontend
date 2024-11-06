@@ -22,7 +22,7 @@ function App() {
           width:500,
           height:500,
         }}
-        src = {`http://localhost:8080/api/v1/videos/stream/${videoId}`} controls
+        src = {`http://localhost:8080/api/v1/videos/stream/range/${videoId}`} controls
         />
       </div>
       
