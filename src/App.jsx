@@ -16,7 +16,7 @@ function App() {
       <h1 className= "text-2xl font-bold text-gray-700 dark:text-gray-100">  Video Streaming Application</h1>
       <div className='flex mt-14 w-full justify-around'>
       <div>
-        <h1 className='text-white'> Playing Video </h1>
+        <h1 className='text-white'> Playing Video in straimg app </h1>
         <video
         style = {{
           width:500,
