@@ -89,7 +89,7 @@ function VideoUpload() {
                 onChange={formFieldChange}
                 name="description"
                 id="comment"
-                placeholder="Write video description..."
+                placeholder="Write video description... here "
                 required
                 rows={4}
               />
